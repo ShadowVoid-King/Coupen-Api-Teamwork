@@ -1,10 +1,14 @@
-const express=require('express');
-const shoppingCartRouter=express.Router();
 
-const { delete_product, add_product }=require("../controllers/shoppingCartControllers");
-const checkAuth=require('../middleware/checkAuth');
+const { AddToCart, DeleteFromCart } = require('../controllers/cart')
+const { CheckAuth } = require('../middelware/checkAuth')
 
-shoppingCartRouter.post('/add', checkAuth, add_product);
-shoppingCartRouter.delete('/delete', checkAuth, delete_product);
+const router=require('express').Router()
 
-module.exports=shoppingCartRouter;
+
+router.use(CheckAuth)
+router.post('/add',AddToCart)
+router.delete('/delete',DeleteFromCart)
+
+
+
+module.exports=router
