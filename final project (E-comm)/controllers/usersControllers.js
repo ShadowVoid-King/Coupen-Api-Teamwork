@@ -2,7 +2,10 @@ const usersModel = require("../models/users");
 const bcrypt = require("bcrypt");
 const getusers = async (req, res) => {
 	try {
-		const { username, password } = req.body;
+        const { username, password } = req.body;
+        if (!username || !password) {
+            return res.status(400).json({ message: "All fields are required" });
+        }
 		const checkUser = await usersModel.findOne({ username });
 		if (!checkUser) {
 			return res.status(404).json({ message: "User not found" });
