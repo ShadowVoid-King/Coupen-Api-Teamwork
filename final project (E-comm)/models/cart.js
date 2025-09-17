@@ -2,7 +2,7 @@ const mongoose=require('mongoose')
 
 const CartSchema= new mongoose.Schema({
     productName:{
-        type:String,
+        type:[String],
         required:true
     },
     username:{
