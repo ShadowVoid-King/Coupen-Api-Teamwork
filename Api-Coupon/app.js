@@ -13,14 +13,14 @@ app.use(express.json());
 
 // Function Add Coupon
 
-function addCoupon() {
+async function  addCoupon() {
 	const code = Math.floor(Math.random() * 1000000); // Generate a random 6-digit code
 	const newCoupon = new Coupen({ code });
 
-	newCoupon.save();
+	await newCoupon.save();
 }
 
-const checkCouponSize = Coupen.find();
+const checkCouponSize = awaitCoupen.find();
 // Check if the number of coupons is less than 5
 if ( checkCouponSize.length < 5) { 
 	for (let i = 0; i < 10; i++) {

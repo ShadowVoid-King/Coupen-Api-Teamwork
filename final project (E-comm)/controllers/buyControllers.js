@@ -2,10 +2,10 @@ const CartData = require("../models/carts");
 const ProductData = require("../models/products");
 
 const buy_without_discount = async (req, res) => {
-    let { username } = req.body;
-    if (!username) {
-        return res.json({ message: "username is required" });
-    }
+	let { username } = req.body;
+	if (!username) {
+		return res.json({ message: "username is required" });
+	}
 	let foundCart = await CartData.findOne({ username });
 	if (!foundCart) {
 		return res.json({ message: "you have no products in your cart to buy" });
@@ -21,11 +21,31 @@ const buy_without_discount = async (req, res) => {
 
 const buy_with_discount = async (req, res) => {
 	let { discount_coupon, username } = req.body;
-    if (!discount_coupon || !username) {
-        return res.json({ message: "all fields are required" });
-    }
-    // Discound Fetch
-
+	if (!discount_coupon || !username) {
+		return res.json({ message: "all fields are required" });
+	}
+	// Discound Fetch
+	const fetchPOSTREQUEST = async (url, body) => {
+		try {
+			console.log("FETCHING URL:", url, "BODY:", body); // Debug log
+			const response = await _fetch(url, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+					username: process.env.USERNAME_SERVER,
+					password: process.env.PASSWORD_SERVER,
+				},
+				body: JSON.stringify(body),
+			});
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.log(error);
+		}
+	};
+	fetchPOSTREQUEST("https://api.promo-code.world/discount", {
+		code: discount_coupon,
+	});
 	let foundCart = await CartData.findOne({ username });
 	if (!foundCart) {
 		return res.json({ message: "you have no products in your cart to buy" });
