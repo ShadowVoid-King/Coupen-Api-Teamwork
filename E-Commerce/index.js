@@ -1,0 +1,32 @@
+const express = require('express');
+const cors = require('cors');
+const mongoose = require('mongoose');
+const { connectDB } = require('./config/connDB');
+const authRouter = require('./router/authRouter');
+const {checkReq} = require('./middleware/checkREQ')
+const app = express();
+app.use(express.json());
+express.urlencoded({ extended: true });
+app.use(cors());
+app.use(checkReq)
+
+connectDB();
+
+
+
+
+app.use('/auth', authRouter)
+
+
+
+// DB Connection
+mongoose.connection.once("connected", () => {
+	console.log("Connected to MongoDB...........");
+	server.listen(3000, () => {
+		console.log("Server running on http://localhost:3000..........");
+	});
+});
+
+mongoose.connection.on("error", (err) => {
+	console.log(err);
+});
