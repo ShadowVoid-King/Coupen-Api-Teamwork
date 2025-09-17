@@ -1,5 +1,5 @@
-const CartData = require("../models/carts");
-const ProductData = require("../models/products");
+const {CartData} = require("../models/cart");
+const {ProductData} = require("../models/products");
 
 const buy_without_discount = async (req, res) => {
 	let { username } = req.body;

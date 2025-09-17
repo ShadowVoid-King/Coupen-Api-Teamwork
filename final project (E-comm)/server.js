@@ -12,7 +12,7 @@ const authRouter = require("./router/authRouter");
 const usersRouter = require("./router/usersRouter");
 const productsRouter = require("./router/productsRouter");
 const shoppingCartRouter = require("./router/shoppingCart");
-const buyRouter = require("./router/buyRouter");
+const buyRouter = require("./router/buy");
 
 const checkAuth = require("./middleware/checkAuth");
 
