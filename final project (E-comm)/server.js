@@ -10,10 +10,10 @@ const mongoose=require('mongoose');
 const connectDB=require("./config/connectDB");
 
 const authRouter=require("./router/authRouter");
-const usersRouter=require("./router/usersRouter");
-const productsRouter=require("./router/productsRouter");
-const shoppingCartRouter=require("./router/shoppingCartRouter");
-const buyRouter=require("./router/buyRouter");
+// const usersRouter=require("./router/usersRouter");
+// const productsRouter=require("./router/productsRouter");
+// const shoppingCartRouter=require("./router/shoppingCartRouter");
+// const buyRouter=require("./router/buyRouter");
 
 const checkAuth = require('./middleware/checkAuth');
 
@@ -42,10 +42,10 @@ app.use(session({
 
 app.use("/auth", authRouter);
 app.use(checkAuth);
-app.use("/users", usersRouter);
-app.use("/products", productsRouter);
-app.use("/shoppingCart", shoppingCartRouter);
-app.use("/buy", buyRouter);
+// app.use("/users", usersRouter);
+// app.use("/products", productsRouter);
+// app.use("/shoppingCart", shoppingCartRouter);
+// app.use("/buy", buyRouter);
 
 
 connectDB();

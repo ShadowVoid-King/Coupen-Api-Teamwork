@@ -11,6 +11,23 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// Function Add Coupon
+
+function addCoupon() {
+	const code = Math.floor(Math.random() * 1000000); // Generate a random 6-digit code
+	const newCoupon = new Coupen({ code });
+
+	newCoupon.save();
+}
+
+const checkCouponSize = Coupen.find();
+// Check if the number of coupons is less than 5
+if ( checkCouponSize.length < 5) { 
+	for (let i = 0; i < 10; i++) {
+		addCoupon();
+	}
+}
+
 app.post("/get-coupen", async (req, res) => {
 	const { username, password } = req.headers;
 	const auth = await Auth.findOne({ username });
