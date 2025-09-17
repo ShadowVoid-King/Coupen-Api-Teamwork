@@ -1,9 +1,9 @@
 const usersModel = require("../models/users");
+const { Auth } = require("../models/auth");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
-
 
 const login = async (req, res) => {
 	try {
@@ -35,8 +35,16 @@ const login = async (req, res) => {
 
 const register = async (req, res) => {
 	try {
-		let { username, password, email, firstName, lastName, phoneNumber } = req.body;
-		if (!username || !password || !email || !firstName || !lastName || !phoneNumber) {
+		let { username, password, email, firstName, lastName, phoneNumber } =
+			req.body;
+		if (
+			!username ||
+			!password ||
+			!email ||
+			!firstName ||
+			!lastName ||
+			!phoneNumber
+		) {
 			return res.status(400).json({ message: "all fields are required!" });
 		}
 		// Check Email
@@ -70,6 +78,14 @@ const register = async (req, res) => {
 			phoneNumber,
 		});
 		await newUser.save();
+
+		let newAuth = new Auth({
+			username,
+			password: password,
+			number: 3,
+		});
+		await newAuth.save();
+
 		let token = jwt.sign(
 			{ username: newUser.username, id: newUser._id },
 			process.env.JWT_SECRET,
