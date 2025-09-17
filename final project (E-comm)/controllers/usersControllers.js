@@ -1,9 +1,9 @@
-const {usersData} = require("../../models/users")
+const usersModel = require("../../models/users")
 const bcrypt = require("bcrypt");
 const getusers = async (req, res) => {
     try {
         const { username , password } = req.body;
-        const checkUser = await usersData.findOne({ username });
+        const checkUser = await usersModel.findOne({ username });
         if (!checkUser) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -12,7 +12,7 @@ const getusers = async (req, res) => {
             return res.status(400).json({ message: "Invalid password" });
         }
 
-        const getUsers = await usersData.find();
+        const getUsers = await usersModel.find();
         if(getUsers.length === 0){
             return res.json("users not found");
         }
@@ -35,7 +35,7 @@ const change_password = async (req, res) => {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const getUser = await usersData.findOne({ username });
+        const getUser = await usersModel.findOne({ username });
         if (!getUser) {
             return res.status(404).json({ message: "User not found" });
         }
@@ -67,7 +67,7 @@ const delete_user = async (req, res) => {
         return res.status(400).json({ message: "Username and password are required" });
      }
 
-     const getUser = await usersData.findOne({ username });
+     const getUser = await usersModel.findOne({ username });
      if (!getUser) {
         return res.status(404).json({ message: "User not found" })
      }
@@ -75,7 +75,7 @@ const delete_user = async (req, res) => {
      if (!isMatch) {
         return res.status(400).json({ message: "Invalid password" });
      }
-     await usersData.findOneAndDelete({ username });
+     await usersModel.findOneAndDelete({ username });
     return res.status(200).json({message:"delete successfull"});
   } catch (error) {
     return res.status(500).json({ message: error.message });
