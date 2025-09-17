@@ -11,7 +11,7 @@ const connectDB = require("./config/connectDB");
 const authRouter = require("./router/authRouter");
 const usersRouter = require("./router/usersRouter");
 const productsRouter = require("./router/productsRouter");
-const shoppingCartRouter = require("./router/shoppingCartRouter");
+const shoppingCartRouter = require("./router/shoppingCart");
 const buyRouter = require("./router/buyRouter");
 
 const checkAuth = require("./middleware/checkAuth");
@@ -58,3 +58,4 @@ mongoose.connection.once("connected", () => {
 mongoose.connection.on("error", () => {
 	console.log("error connecting mongodb");
 });
+
