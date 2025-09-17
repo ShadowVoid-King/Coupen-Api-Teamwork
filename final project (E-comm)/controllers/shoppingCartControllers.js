@@ -1,5 +1,7 @@
 const { CartData } = require("../models/cart")
 
+const { CartData } = require("../models/cart");
+
 const AddToCart = async (req, res) => {
   try {
     const { productName, username } = req.body;
@@ -7,33 +9,50 @@ const AddToCart = async (req, res) => {
     if (!productName || !username)
       return res.status(400).send("all fields are required");
 
-    let product = await CartData.findOne({ productName, username });
-    if (product) return res.status(200).json({ message: "already in cart" });
+    let cart = await CartData.findOne({ username });
 
-    const newItem = new CartData({ productName, username });
-    await newItem.save();
+    if (!cart) {
+      const newCart = new CartData({
+        username,
+        productName: [productName]
+      });
+      await newCart.save();
+      return res.status(201).json({ message: "cart created and product added", newCart });
+    }
 
-    return res.status(201).json({ message: "added to cart", newItem });
+    if (cart.productName.includes(productName)) {
+      return res.status(200).json({ message: "product already in cart" });
+    }
+
+    cart.productName.push(productName);
+    await cart.save();
+
+    return res.status(200).json({ message: "product added to cart", cart });
   } catch (err) {
     return res.status(500).send(err.message);
   }
 };
 
-const DeleteFromCart=async(req,res)=>{
+const DeleteFromCart = async (req, res) => {
   try {
     const { productName, username } = req.body;
 
     if (!productName || !username)
       return res.status(400).send("all fields are required");
 
-       const deleted = await CartData.findOneAndDelete({ productName, username });
+    let cart = await CartData.findOne({ username });
+    if (!cart) return res.status(404).send("cart not found");
 
-    if (!deleted) return res.status(404).send("item not found in cart");
+    if (!cart.productName.includes(productName))
+      return res.status(404).send("product not found in cart");
 
-    return res.status(200).json({ message: "deleted from cart" });
+    cart.productName = cart.productName.filter(p => p !== productName);
+    await cart.save();
 
+    return res.status(200).json({ message: "product removed from cart", cart });
   } catch (err) {
     return res.status(500).send(err.message);
   }
-}
+};
+
 module.exports={AddToCart,DeleteFromCart}
