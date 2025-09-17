@@ -4,7 +4,7 @@ const {
 	AddProduct,
 	EditProduct,
 	DeleteProduct,
-} = require("../controllers/products");
+} = require("../controllers/productsControllers");
 const { CheckAuth } = require("../middelware/checkAuth");
 const checkAuth = require("../middleware/checkAuth");
 
@@ -19,3 +19,4 @@ router.put("/change-data", checkAuth, EditProduct);
 router.delete("/delete-product", checkAuth, DeleteProduct);
 
 module.exports = router;
+
