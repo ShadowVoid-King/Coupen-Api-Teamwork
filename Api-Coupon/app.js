@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Function Add Coupon
 async function addCoupon() {
-	const code = Math.floor(Math.random()*900000)+100000 // Generate a random 6-digit code
+	const code = Math.floor(Math.random() * 900000) + 100000; // Generate a random 6-digit code
 	const newCoupon = new Coupen({ code });
 	await newCoupon.save();
 }
@@ -32,8 +32,6 @@ async function ensureCoupons() {
 		console.log("Enough coupons already exist");
 	}
 }
-// Function to check and insert coupons
-ensureCoupons();
 
 app.post("/get-coupen", async (req, res) => {
 	const { username, password } = req.headers;
@@ -66,8 +64,14 @@ app.post("/discount", async (req, res) => {
 	res.send("Discount applied");
 });
 
-mongoose.connection.once("open", () => {
+mongoose.connection.once("open", async () => {
 	console.log("Database connected......");
+	// Run ensureCoupons ONLY after DB is ready
+	try {
+		await ensureCoupons(); // ensure coupons before starting server
+	} catch (err) {
+		console.error("Error ensuring coupons:", err.message);
+	}
 	app.listen(8000, () => {
 		console.log("Server started......");
 	});
