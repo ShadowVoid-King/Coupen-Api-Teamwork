@@ -1,8 +1,9 @@
-const { usersData } = require("../models/users");
+const usersModel = require("../models/users");
 const bcrypt = require("bcrypt");
 const path = require("path");
 const jwt = require("jsonwebtoken");
 require("dotenv").config({ path: path.join(__dirname, "../.env") });
+
 
 const login = async (req, res) => {
 	try {
@@ -12,7 +13,7 @@ const login = async (req, res) => {
 				.status(400)
 				.json({ message: "username and password are required!" });
 		}
-		let foundUser = await usersData.findOne({ username });
+		let foundUser = await usersModel.findOne({ username });
 		if (!foundUser) {
 			return res.status(400).json({ message: "user not found!" });
 		}
@@ -48,7 +49,7 @@ const register = async (req, res) => {
 		if (!validEmails.includes(email.split("@")[1])) {
 			return res.status(400).json({ message: "invalid email!" });
 		}
-		let foundUser = await usersData.findOne({
+		let foundUser = await usersModel.findOne({
 			$or: [{ email }, { username }],
 		});
 		if (foundUser) {
@@ -60,7 +61,7 @@ const register = async (req, res) => {
 				.json({ message: "password must be at least 8 characters!" });
 		}
 		const hashedPassword = bcrypt.hashSync(password, 10);
-		let newUser = new usersData({
+		let newUser = new usersModel({
 			username,
 			password: hashedPassword,
 			email,
