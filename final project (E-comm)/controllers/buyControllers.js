@@ -1,19 +1,19 @@
-const cartsModel = require("../models/carts");
-const productsModel = require("../models/products");
+const CartData = require("../models/carts");
+const ProductData = require("../models/products");
 
 const buy_without_discount = async (req, res) => {
     let { username } = req.body;
     if (!username) {
         return res.json({ message: "username is required" });
     }
-	let foundCart = await cartsModel.findOne({ username });
+	let foundCart = await CartData.findOne({ username });
 	if (!foundCart) {
 		return res.json({ message: "you have no products in your cart to buy" });
 	}
 	let products = foundCart.products;
 	let totalPrice;
 	for (let prod of products) {
-		let product = await productsModel.findOne({ title: prod });
+		let product = await ProductData.findOne({ title: prod });
 		totalPrice += product.price;
 	}
 	res.json({ products, totalPrice: totalPrice + "$" });
@@ -26,14 +26,14 @@ const buy_with_discount = async (req, res) => {
     }
     // Discound Fetch
 
-	let foundCart = await cartsModel.findOne({ username });
+	let foundCart = await CartData.findOne({ username });
 	if (!foundCart) {
 		return res.json({ message: "you have no products in your cart to buy" });
 	}
 	let products = foundCart.products;
 	let TPrice_before;
 	for (let prod of products) {
-		let product = await productsModel.findOne({ title: prod });
+		let product = await ProductData.findOne({ title: prod });
 		TPrice_before += product.price;
 	}
 	res.json({
