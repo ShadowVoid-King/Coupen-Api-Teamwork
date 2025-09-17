@@ -28,12 +28,10 @@ const buy_with_discount = async (req, res) => {
 	const fetchPOSTREQUEST = async (url, body) => {
 		try {
 			console.log("FETCHING URL:", url, "BODY:", body); // Debug log
-			const response = await _fetch(url, {
+			const response = await fetch(url, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
-					username: process.env.USERNAME_SERVER,
-					password: process.env.PASSWORD_SERVER,
 				},
 				body: JSON.stringify(body),
 			});
@@ -43,7 +41,7 @@ const buy_with_discount = async (req, res) => {
 			console.log(error);
 		}
 	};
-	fetchPOSTREQUEST("https://api.promo-code.world/discount", {
+	fetchPOSTREQUEST("https://127.0.0.1:8000/discount", {
 		code: discount_coupon,
 	});
 	let foundCart = await CartData.findOne({ username });

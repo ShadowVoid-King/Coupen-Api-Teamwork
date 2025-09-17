@@ -13,7 +13,7 @@ app.use(express.json());
 
 // Function Add Coupon
 async function addCoupon() {
-	const code = Math.floor(Math.random() * 1000000); // Generate a random 6-digit code
+	const code = Math.floor(Math.random()*900000)+100000 // Generate a random 6-digit code
 	const newCoupon = new Coupen({ code });
 	await newCoupon.save();
 }
