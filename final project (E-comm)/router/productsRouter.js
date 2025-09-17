@@ -1,13 +1,17 @@
-const express=require('express');
-const productsRouter=express.Router();
 
-const {getproducts, getproducts, delete_product, change_data, add_product }=require("../controllers/productsControllers");
-const checkAuth=require('../middleware/checkAuth');
+const { GetAllProducts, GetProductById, AddProduct, EditProduct, DeleteProduct } = require('../controllers/products')
+const { CheckAuth } = require('../middelware/checkAuth')
 
-productsRouter.get('/all-products', getproducts);
-productsRouter.get('/:product', getproduct);
-productsRouter.post('/add-product', checkAuth, add_product);
-productsRouter.put('/change-data', checkAuth, change_data);
-productsRouter.delete('/delete-product', checkAuth, delete_product);
+const router=require('express').Router()
 
-module.exports=productsRouter;
+router.get('/all-products',GetAllProducts)
+router.get('/:product',GetProductById)
+
+router.use(CheckAuth)
+router.post('/add-product',AddProduct)
+router.put('/change-data',EditProduct)
+router.delete('/delete-product',DeleteProduct)
+
+
+
+module.exports=router
