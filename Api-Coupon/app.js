@@ -12,21 +12,28 @@ app.use(cors());
 app.use(express.json());
 
 // Function Add Coupon
-
-async function  addCoupon() {
+async function addCoupon() {
 	const code = Math.floor(Math.random() * 1000000); // Generate a random 6-digit code
 	const newCoupon = new Coupen({ code });
-
 	await newCoupon.save();
 }
 
-const checkCouponSize = awaitCoupen.find();
-// Check if the number of coupons is less than 5
-if ( checkCouponSize.length < 5) { 
-	for (let i = 0; i < 10; i++) {
-		addCoupon();
+// Function to check and insert coupons
+async function ensureCoupons() {
+	const checkCouponSize = await Coupen.find();
+
+	// Check if the number of coupons is less than 5
+	if (checkCouponSize.length < 5) {
+		for (let i = 0; i < 10; i++) {
+			await addCoupon(); // wait for each save
+		}
+		console.log("10 coupons added successfully");
+	} else {
+		console.log("Enough coupons already exist");
 	}
 }
+// Function to check and insert coupons
+ensureCoupons();
 
 app.post("/get-coupen", async (req, res) => {
 	const { username, password } = req.headers;
